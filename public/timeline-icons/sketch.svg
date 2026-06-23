@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 240 234" style="enable-background: new 0 0 240 234" xml:space="preserve">
+<style>.st0 {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  fill: #fdad00;
+}
+
+.st1 {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  fill: #fdb300;
+}
+
+.st2 {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  fill: #ea6c00;
+}
+
+.st3 {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  fill: #fdd231;
+}
+
+</style>
+<g>
+	<path id="e" class="st0" d="M119.8,189.6L67.7,96.2H172L119.8,189.6"></path>
+	<path id="b_00000088104565926088999100000002067385476587961989_" class="st1" d="M42.4,100l33.8-45l43.8-4.6l43.8,4.6l33.9,45.1"></path>
+	<path id="b_00000118361034478207427670000016807668784619931044_" class="st1" d="M120,189.6L42.4,100"></path>
+	<path id="b" class="st1" d="M197.6,100L120,189.6"></path>
+	<path id="c_00000101072407967744770040000012703270301805519006_" class="st2" d="M42.4,100.6h31.4l46.2,89"></path>
+	<path id="c" class="st2" d="M120,189.6l-77.6-89"></path>
+	<path id="d_00000168097059244369379460000009691785390944873131_" class="st2" d="M197.6,100.6h-31.4l-46.2,89"></path>
+	<path id="d" class="st2" d="M120,189.6l77.6-89"></path>
+	<g transform="translate(10.04)">
+		<path id="f" class="st3" d="M109.4,50.3l-42.9,4.6l-2.4,45.6C64.1,100.5,109.4,50.3,109.4,50.3z"></path>
+	</g>
+	<path id="h" class="st0" d="M197.6,100.6l-34-45.3l2.4,45.3H197.6"></path>
+	<path id="i" class="st0" d="M42.4,100.6l34-45.3L74,100.6H42.4"></path>
+</g>
+</svg>

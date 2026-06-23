@@ -1,26 +1,172 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@config "../tailwind.config.ts";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 243 248 240;
+  --foreground: 29 29 31;
+  --card: 226 233 222;
+  --muted: 150 150 150;
+  --border: 220 227 216;
+  --title: 29 29 31;
+  --text: 112 112 112;
+
+  --primary-50: 240 253 244;
+  --primary-100: 220 252 231;
+  --primary-200: 187 247 208;
+  --primary-300: 60 213 190;
+  --primary-400: 74 222 128;
+  --primary-500: 34 197 94;
+  --primary-600: 22 163 74;
+  --primary-700: 21 128 61;
+  --primary-800: 22 101 52;
+  --primary-900: 20 83 45;
+  --primary-950: 5 46 22;
+
+  --accent-50: 250 250 250;
+  --accent-100: 244 244 245;
+  --accent-200: 228 228 231;
+  --accent-300: 212 212 216;
+  --accent-400: 161 161 170;
+  --accent-500: 113 113 122;
+  --accent-600: 82 82 91;
+  --accent-700: 63 63 70;
+  --accent-800: 39 39 42;
+  --accent-900: 24 24 26;
+  --accent-950: 12 12 14;
+
+  --orange-50: 255 247 237;
+  --orange-100: 255 237 213;
+  --orange-200: 254 215 170;
+  --orange-300: 253 186 116;
+  --orange-400: 251 146 60;
+  --orange-500: 249 115 22;
+  --orange-600: 234 88 12;
+  --orange-700: 194 65 12;
+  --orange-800: 154 52 18;
+  --orange-900: 124 45 18;
+  --orange-950: 67 20 7;
+
+  --success-50: 235 255 248;
+  --success-100: 200 255 235;
+  --success-200: 150 250 215;
+  --success-300: 95 235 190;
+  --success-400: 50 215 165;
+  --success-500: 25 190 145;
+  --success-600: 15 160 125;
+  --success-700: 12 130 100;
+  --success-800: 10 100 80;
+  --success-900: 8 75 60;
+  --success-950: 5 45 35;
+
+  --warning-50: 255 250 240;
+  --warning-100: 255 238 200;
+  --warning-200: 255 225 160;
+  --warning-300: 255 200 110;
+  --warning-400: 255 175 70;
+  --warning-500: 245 150 40;
+  --warning-600: 220 125 30;
+  --warning-700: 190 100 25;
+  --warning-800: 150 75 20;
+  --warning-900: 110 55 15;
+  --warning-950: 60 35 5;
+
+  --error-50: 255 245 245;
+  --error-100: 255 225 225;
+  --error-200: 255 195 195;
+  --error-300: 255 160 160;
+  --error-400: 255 110 110;
+  --error-500: 240 70 70;
+  --error-600: 215 50 50;
+  --error-700: 185 35 35;
+  --error-800: 145 25 25;
+  --error-900: 100 20 20;
+  --error-950: 65 10 10;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html.dark {
+  --background: 31 31 33;
+  --foreground: 238 238 238;
+  --card: 24 24 26;
+  --muted: 112 112 112;
+  --border: 53 53 53;
+  --title: 249 249 249;
+  --text: 172 172 172;
+
+  --accent-50: 6 6 8;
+  --accent-100: 12 12 14;
+  --accent-200: 24 24 26;
+  --accent-300: 39 39 42;
+  --accent-400: 82 82 91;
+  --accent-500: 113 113 122;
+  --accent-600: 161 161 170;
+  --accent-700: 212 212 216;
+  --accent-800: 228 228 231;
+  --accent-900: 244 244 245;
+  --accent-950: 250 250 250;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
+
+body::-webkit-scrollbar {
+  width: 0.5rem;
+  background-color: #172530;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 168, 112);
+  border-radius: 9999px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #172530;
+}
+
+::selection {
+  background-color: #6563ff;
+  color: #f5fcff;
+}
+
+.client-slider .swiper {
+  padding-bottom: 2rem;
+}
+
+.client-slider .swiper-pagination {
+  bottom: 1rem;
+}
+
+.client-slider .swiper-pagination-bullet {
+  background-color: rgba(34, 197, 94, 0.7);
+}
+
+.client-slider .swiper-pagination-bullet-active {
+  background-color: rgba(34, 197, 94, 1);
+}
+
+@keyframes scrollPulse {
+  0% {
+    transform: translateY(-1rem);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(1rem);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(2rem);
+    opacity: 0;
+  }
+}
+
+.scroll-arrow {
+  animation: scrollPulse 1.6s ease-in-out infinite;
 }
