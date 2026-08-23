@@ -4,22 +4,18 @@ import Section from '@/app/components/layout/section/Section';
 import Heading from '@/app/components/typography/heading/Heading';
 import Paragraph from '@/app/components/typography/paragraph/Paragraph';
 import Button from '../button/Button';
-import Image from 'next/image';
 
 const GraphicDesignSection = () => {
   return (
     <Section id='graphic-design'>
       <Row>
         <Badge className='mb-4'>Graphic Design</Badge>
-
         <Heading level={2} size='xl' variant='primary'>
           Creative Visual Communication
         </Heading>
-
         <Heading level={3} size='md' className='mb-4'>
           Modern Graphic Design Solutions for Digital & Print
         </Heading>
-
         <div className='mb-8'>
           <Paragraph className='mb-4'>
             I create professional and visually engaging design solutions across
@@ -28,7 +24,6 @@ const GraphicDesignSection = () => {
             to web graphics and promotional content, every design is crafted to
             communicate effectively and leave a lasting impression.
           </Paragraph>
-
           <Paragraph className='mb-6'>
             Beyond design execution, I work closely with clients to develop
             strategic visual communication that aligns with their goals,
@@ -38,7 +33,20 @@ const GraphicDesignSection = () => {
             engagement.
           </Paragraph>
           <Button href='#portfolio'>
-            <Image width={24} height={24} src='/coffee.svg' alt='Tour' />
+            <span
+              aria-hidden='true'
+              className='block h-6 w-6 shrink-0 bg-current'
+              style={{
+                maskImage: 'url(/coffee.svg)',
+                WebkitMaskImage: 'url(/coffee.svg)',
+                maskRepeat: 'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskPosition: 'center',
+                maskSize: 'contain',
+                WebkitMaskSize: 'contain',
+              }}
+            />
             Take a Tour
           </Button>
         </div>

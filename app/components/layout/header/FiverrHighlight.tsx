@@ -13,7 +13,6 @@ const FiverrHighlight = () => {
           alt='Fiverr'
           className='h-auto w-20 dark:hidden'
         />
-
         <Image
           width={100}
           height={100}
@@ -21,7 +20,6 @@ const FiverrHighlight = () => {
           alt='Fiverr'
           className='h-auto w-20 hidden dark:block'
         />
-
         <div className='mt-1'>
           <div className='flex gap-0.5'>
             {Array.from({ length: 5 }).map((_, index) => (
@@ -35,7 +33,6 @@ const FiverrHighlight = () => {
               />
             ))}
           </div>
-
           <div className='space-x-2 text-text'>
             <span>
               Fiverr Score: <span className='font-medium text-title'>5.0</span>
@@ -46,7 +43,6 @@ const FiverrHighlight = () => {
           </div>
         </div>
       </div>
-
       <div className='flex items-center gap-1'>
         <Image
           width={20}
@@ -55,10 +51,8 @@ const FiverrHighlight = () => {
           alt='Trophy'
           className='h-11 sm:w-5 w-11 sm:h-5'
         />
-
         <Paragraph className='italic text-muted text-sm sm:text-base'>
-          <span className='text-title'>Title:</span> Fiverr&apos;s top
-          recommended{' '}
+          <span className='text-title'>Title:</span> Top Rated Seller{' '}
           <Link
             href='https://www.fiverr.com/petar_rs?public_mode=true'
             target='_blank'

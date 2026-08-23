@@ -5,14 +5,12 @@ export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   variant?:
     | 'default'
     | 'primary'
-    | 'secondary'
     | 'accent'
     | 'foreground'
     | 'success'
     | 'warning'
     | 'error'
     | 'primaryGradient'
-    | 'secondaryGradient'
     | 'accentGradient';
   inset?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
@@ -27,14 +25,12 @@ const Section = ({
   const variants = {
     default: 'bg-none',
     primary: 'bg-primary/10',
-    secondary: 'bg-secondary/10',
     accent: 'bg-accent/10',
     foreground: 'bg-foreground/10',
     success: 'bg-success',
     warning: 'bg-warning',
     error: 'bg-error',
     primaryGradient: 'bg-gradient-to-br from-primary/20 to-primary/0',
-    secondaryGradient: 'bg-gradient-to-br from-secondary/20 to-secondary/0',
     accentGradient: 'bg-gradient-to-br from-accent/30 to-accent/0',
   };
 

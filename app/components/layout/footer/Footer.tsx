@@ -7,7 +7,7 @@ const Footer = () => {
     <footer>
       <Row className='flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-4 border-t border-border'>
         <Copyright />
-        <Social />
+        <Social iconClassName='bg-title' />
       </Row>
     </footer>
   );

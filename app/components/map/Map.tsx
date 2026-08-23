@@ -1,17 +1,20 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? '';
 
 export default function Map() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
+  const [unavailable, setUnavailable] = useState(!MAPBOX_TOKEN);
 
   useEffect(() => {
-    if (!mapContainerRef.current || mapRef.current) return;
+    if (!MAPBOX_TOKEN || !mapContainerRef.current || mapRef.current) return;
+
+    mapboxgl.accessToken = MAPBOX_TOKEN;
 
     const lng = 20.4573;
     const lat = 44.8176;
@@ -30,6 +33,11 @@ export default function Map() {
           show3dObjects: false,
         },
       },
+    });
+
+    map.on('error', (e) => {
+      const status = (e.error as { status?: number } | undefined)?.status;
+      if (status === 401 || status === 403) setUnavailable(true);
     });
 
     map.addControl(new mapboxgl.AttributionControl({ compact: true }));
@@ -64,7 +72,14 @@ export default function Map() {
       <div className='absolute z-20 left-0 bottom-0 bg-black/30 backdrop-blur py-2 px-2 rounded text-sm text-primary-50 shadow w-full flex justify-between border-t border-border/20 dark:border-border'>
         <span>Address</span> <span>Belgrade, Serbia</span>
       </div>
-      <div ref={mapContainerRef} className='h-[420px] w-full overflow-hidden' />
+      <div ref={mapContainerRef} className='h-[420px] w-full overflow-hidden bg-black/80' />
+      {unavailable && (
+        <div className='absolute inset-0 z-10 flex items-center justify-center px-6 text-center text-sm text-primary-50'>
+          {process.env.NODE_ENV === 'production'
+            ? 'Belgrade, Serbia'
+            : 'Map unavailable. Set NEXT_PUBLIC_MAPBOX_TOKEN in .env.local.'}
+        </div>
+      )}
     </div>
   );
 }

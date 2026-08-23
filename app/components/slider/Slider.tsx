@@ -1,7 +1,7 @@
 'use client';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { A11y, Keyboard, Pagination } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -15,7 +15,7 @@ type Client = {
   name: string;
   position: string;
   review: string;
-  profileImage: string;
+  avatar: string;
 };
 
 const clients: Client[] = [
@@ -25,7 +25,7 @@ const clients: Client[] = [
     position: 'Founder/COO at FPFX Technologies',
     review:
       'Amazing creativity and design skills. Extremely fast and efficient. Delivered the project well in advance and provided excellent suggestions to improve our design.',
-    profileImage: '/profile-images/profile_1.svg',
+    avatar: '/user_sith.svg',
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ const clients: Client[] = [
     position: 'CEO and Founder at Magnaverse',
     review:
       'Petar is a great guy. Very professional, diligent and flexible. What he promised he delivered and within the expected timeframe.',
-    profileImage: '/profile-images/profile_2.svg',
+    avatar: '/robot_star_wars.svg',
   },
   {
     id: 3,
@@ -41,7 +41,7 @@ const clients: Client[] = [
     position: 'Product Manager at FintechX',
     review:
       'Outstanding work quality and communication. The project exceeded expectations and was delivered flawlessly.',
-    profileImage: '/profile-images/profile_3.svg',
+    avatar: '/alien.svg',
   },
   {
     id: 4,
@@ -49,7 +49,7 @@ const clients: Client[] = [
     position: 'Marketing Director at Brandify',
     review:
       'Creative, reliable and very easy to work with. Highly recommended for any design or frontend work.',
-    profileImage: '/profile-images/profile_4.svg',
+    avatar: '/star_wars_bounty_hunter.svg',
   },
   {
     id: 5,
@@ -57,7 +57,23 @@ const clients: Client[] = [
     position: 'CTO at ScaleTech',
     review:
       'Strong technical skills and attention to detail. Delivered clean and scalable solutions.',
-    profileImage: '/profile-images/profile_5.svg',
+    avatar: '/robot.svg',
+  },
+  {
+    id: 6,
+    name: 'Sasa T.',
+    position: 'Founder, Radio Periskop',
+    review:
+      'They understood the station before they drew anything. The mark holds up on a poster, in a feed and on a phone screen.',
+    avatar: '/cowboy.svg',
+  },
+  {
+    id: 7,
+    name: 'Dragana S.',
+    position: 'Brand identity project',
+    review:
+      'The logo holds up stamped on a card and shrunk to a favicon. The guide that came with it meant we never had to guess.',
+    avatar: '/star_wars-user.svg',
   },
 ];
 
@@ -65,9 +81,17 @@ export default function ClientSlider() {
   return (
     <div className='w-full client-slider'>
       <Swiper
-        modules={[Pagination]}
+        modules={[A11y, Keyboard, Pagination]}
         spaceBetween={24}
         slidesPerView={2}
+        keyboard={{ enabled: true }}
+        a11y={{
+          enabled: true,
+          containerMessage: 'Client testimonials',
+          prevSlideMessage: 'Previous testimonial',
+          nextSlideMessage: 'Next testimonial',
+          paginationBulletMessage: 'Go to testimonial {{index}}',
+        }}
         pagination={{ clickable: true, dynamicBullets: true }}
         breakpoints={{
           0: { slidesPerView: 1 },
@@ -76,7 +100,7 @@ export default function ClientSlider() {
       >
         {clients.map((client) => (
           <SwiperSlide key={client.id}>
-            <Card className='relative mb-3 min-h-[6.875rem]'>
+            <Card elevate={false} className='relative mb-3 min-h-[6.875rem]'>
               <Paragraph className='relative z-10'>{client.review}</Paragraph>
               <div className='absolute -bottom-1.5 left-8 w-3 h-3 bg-card rotate-[135deg]'></div>
               <Image
@@ -90,11 +114,19 @@ export default function ClientSlider() {
             <div className='ml-5'>
               <div className='flex items-center gap-3'>
                 <div className='bg-card p-2 rounded-full'>
-                  <Image
-                    width={22}
-                    height={22}
-                    src={client.profileImage}
-                    alt={client.name}
+                  <span
+                    aria-hidden='true'
+                    className='block h-5.5 w-5.5 bg-primary'
+                    style={{
+                      maskImage: `url(${client.avatar})`,
+                      WebkitMaskImage: `url(${client.avatar})`,
+                      maskRepeat: 'no-repeat',
+                      WebkitMaskRepeat: 'no-repeat',
+                      maskPosition: 'center',
+                      WebkitMaskPosition: 'center',
+                      maskSize: 'contain',
+                      WebkitMaskSize: 'contain',
+                    }}
                   />
                 </div>
                 <div className='flex flex-col'>

@@ -24,6 +24,7 @@ export interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   rel?: string;
   target?: '_blank' | '_self' | '_parent' | '_top';
+  download?: boolean | string;
 }
 
 const Button = ({
@@ -46,22 +47,24 @@ const Button = ({
   type = 'button',
   rel,
   target,
+  download,
   ...props
 }: ButtonProps) => {
   const isDisabled = disabled || loading;
   const isGhost = variant === 'ghost';
   const isHashLink = !!href && href.startsWith('#');
+  const isPlainAnchor = !!href && (isHashLink || download !== undefined);
 
   const variants = {
     primary:
-      'bg-gradient-to-br from-primary-300 to-primary-700 hover:from-primary-700 hover:to-primary-300 text-primary-50',
+      'bg-gradient-to-br from-primary-700 to-primary-900 hover:from-primary-900 hover:to-primary-700 text-primary-50',
     accent:
       'bg-accent-950 dark:bg-accent-950 hover:bg-accent-800 dark:hover:bg-accent-800 text-accent-50',
     success: 'bg-success hover:bg-success-600 text-success-50',
     warning: 'bg-warning hover:bg-warning-600 text-warning-50',
     error: 'bg-error hover:bg-error-600 text-error-50',
     ghost:
-      'bg-transparent text-content-title hover:text-primary-400 hover:bg-transparent',
+      'bg-transparent text-title hover:text-primary-400 hover:bg-transparent',
   };
 
   const sizes = {
@@ -113,7 +116,7 @@ const Button = ({
     </>
   );
 
-  if (href && isHashLink) {
+  if (href && isPlainAnchor) {
     return (
       <a
         href={isDisabled ? '#' : href}
@@ -125,6 +128,7 @@ const Button = ({
         onClick={isDisabled ? (e) => e.preventDefault() : onClick}
         rel={rel}
         target={target}
+        download={download}
         {...props}
       >
         {content}

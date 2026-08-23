@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, TextareaHTMLAttributes, useMemo, useState } from 'react';
+import { forwardRef, TextareaHTMLAttributes, useMemo, useState, useId } from 'react';
 import { cn } from '@/app/utils/cn';
 import Paragraph from '../typography/paragraph/Paragraph';
 
@@ -30,6 +30,10 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref,
   ) => {
+    const generatedId = useId();
+    const textareaId = id ?? generatedId;
+    const errorId = `${textareaId}-error`;
+
     const [isFocused, setIsFocused] = useState(false);
     const [internalValue, setInternalValue] = useState(
       defaultValue?.toString() ?? '',
@@ -46,22 +50,24 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     const borderClass = useMemo(() => {
       if (error) return 'border-b-error';
-      if (hasValue) return 'border-b-success';
       if (isFocused) return 'border-b-primary';
+      if (hasValue) return 'border-b-success';
       return 'border-b-border';
     }, [error, hasValue, isFocused]);
 
     return (
       <div className='flex flex-col gap-1'>
         {label && (
-          <label htmlFor={id} className='text-xs text-muted'>
+          <label htmlFor={textareaId} className='text-xs text-muted'>
             {label}
           </label>
         )}
 
         <textarea
           ref={ref}
-          id={id}
+          id={textareaId}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
           required={required}
           value={currentValue}
           onFocus={(e) => {
@@ -80,7 +86,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           }}
           disabled={disabled}
           className={cn(
-            'w-full min-h-30 resize-none px-4 py-3 text-content-text bg-card placeholder:text-muted',
+            'w-full min-h-30 resize-none px-4 py-3 text-text bg-card placeholder:text-muted',
             'border-0 border-b-2 rounded-tl-md rounded-tr-md rounded-bl-none rounded-br-none',
             'focus:outline-none',
             borderClass,
@@ -89,9 +95,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           )}
           {...props}
         />
-
         {error && (
-          <Paragraph className='text-xs font-medium text-error'>
+          <Paragraph
+            id={errorId}
+            role='alert'
+            className='text-xs font-medium text-error'
+          >
             {error}
           </Paragraph>
         )}

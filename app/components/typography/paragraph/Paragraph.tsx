@@ -1,13 +1,16 @@
 import { cn } from '@/app/utils/cn';
 
-interface ParagraphProps {
+interface ParagraphProps
+  extends React.HTMLAttributes<HTMLParagraphElement> {
   children: React.ReactNode;
   className?: string;
 }
 
-const Paragraph = ({ children, className = '' }: ParagraphProps) => {
+const Paragraph = ({ children, className = '', ...props }: ParagraphProps) => {
   return (
-    <p className={cn('leading-relaxed text-text', className)}>{children}</p>
+    <p className={cn('leading-relaxed text-text', className)} {...props}>
+      {children}
+    </p>
   );
 };
 

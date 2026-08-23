@@ -1,12 +1,14 @@
 'use client';
 
+import { cn } from '@/app/utils/cn';
+
 export interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
 }
 
-const Form = ({ children, ...props }: FormProps) => {
+const Form = ({ children, className, ...props }: FormProps) => {
   return (
-    <form {...props} className='space-y-4 w-full'>
+    <form {...props} className={cn('space-y-4 w-full', className)}>
       {children}
     </form>
   );

@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 640 640">
-  <!-- Generator: Adobe Illustrator 29.8.5, SVG Export Plug-In . SVG Version: 2.1.1 Build 2)  -->
-  <defs>
-    <style>
-      .st0 {
-        isolation: isolate;
-        opacity: .4;
-      }
-
-      .st0, .st1 {
-        fill: #5ec65a;
-      }
-    </style>
-  </defs>
-  <path class="st0" d="M225.2,535.2c-4.9,17,5,34.7,22,39.6,17,4.9,34.7-5,39.6-22L414.8,104.8c4.9-17-5-34.7-22-39.6-17-4.9-34.7,5-39.6,22l-128,448Z"/>
-  <path class="st1" d="M457.4,201.4c-12.5,12.5-12.5,32.8,0,45.3l73.4,73.4-73.4,73.4c-12.5,12.5-12.5,32.8,0,45.3s32.8,12.5,45.3,0l96-96c12.5-12.5,12.5-32.8,0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3,0v-.1ZM182.7,201.4c-12.5-12.5-32.8-12.5-45.3,0l-96,96c-12.5,12.5-12.5,32.8,0,45.3l96,96c12.5,12.5,32.8,12.5,45.3,0s12.5-32.8,0-45.3l-73.4-73.4,73.3-73.4c12.5-12.5,12.5-32.8,0-45.3l.1.1Z"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Pro 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2026 Fonticons, Inc.--><path d="M68.8 155.3L57.5 144L80.1 121.4L91.4 132.7L267.4 308.7L278.8 320L267.4 331.3L91.4 507.3L80.1 518.6L57.5 496L68.8 484.7L233.5 320L68.8 155.3zM272.1 480L576.1 480L576.1 512L256.1 512L256.1 480L272.1 480z"/></svg>

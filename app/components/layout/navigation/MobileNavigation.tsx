@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { label: 'Graphic Design', href: '#graphic-design' },
   { label: 'Portfolio', href: '#portfolio' },
   { label: 'Clients', href: '#clients' },
-  { label: 'Latest Posts', href: '#latest-posts' },
+  { label: 'Latest Posts', href: '#journal' },
   { label: 'Contact', href: '#contact' },
 ] as const;
 
@@ -67,7 +67,6 @@ const MobileNavigation = () => {
           />
         </span>
       </button>
-
       <div
         className={`fixed inset-0 z-40 xl:hidden transition-all duration-300 ${
           isOpen
@@ -76,8 +75,7 @@ const MobileNavigation = () => {
         }`}
       >
         <div className='absolute inset-0 bg-background/95 backdrop-blur-sm' />
-
-        <nav className='relative h-screen flex items-center justify-center px-6'>
+        <nav className='relative min-h-screen max-h-screen overflow-y-auto flex items-center justify-center px-6 py-10'>
           <ul className='flex flex-col items-center w-full max-w-md'>
             {NAV_ITEMS.map((item) => {
               const isActive = activeItem === item.label;
@@ -106,7 +104,6 @@ const MobileNavigation = () => {
                             : 'opacity-0 scale-95 skew-x-0'
                         }`}
                       />
-
                       <span
                         className={`relative z-10 transition-all duration-300 ease-out ${
                           isActive ? 'text-accent-50' : 'text-foreground'

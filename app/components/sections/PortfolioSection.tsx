@@ -10,15 +10,12 @@ const PortfolioSection = () => {
     <Section id='portfolio'>
       <Row>
         <Badge className='mb-4'>Portfolio</Badge>
-
         <Heading level={2} size='xl' variant='primary'>
           Selected Projects & Creative Work
         </Heading>
-
         <Heading level={3} size='md' className='mb-4'>
           A showcase of development, design, and digital experiences
         </Heading>
-
         <Paragraph className='mb-6'>
           Explore a collection of projects that reflect my experience in web
           development, UI/UX design, and graphic design. Each project is focused
@@ -26,7 +23,6 @@ const PortfolioSection = () => {
           solutions to deliver engaging digital experiences and meaningful
           results.
         </Paragraph>
-
         <Portfolio />
       </Row>
     </Section>

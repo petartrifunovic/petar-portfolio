@@ -9,15 +9,12 @@ const ContactSection = () => {
     <Section id='contact'>
       <Row>
         <Badge className='mb-4'>Contact</Badge>
-
         <Heading level={2} size='xl' variant='primary'>
           Get in Touch
         </Heading>
-
         <Heading level={3} size='md' className='mb-4'>
-          Reach Out and Let&apos;s Chat!
+          Have a question or a project in mind? Send me a message.
         </Heading>
-
         <ContactForm />
       </Row>
     </Section>

@@ -19,9 +19,9 @@ const Message = ({
     success:
       'bg-success/20 text-success-950 dark:text-success-50 border border-success/20',
     warning:
-      'bg-warning/20 text-warning-50 dark:text-warning-950 border border-warning/20',
+      'bg-warning/20 text-warning-950 dark:text-warning-50 border border-warning/20',
     error:
-      'bg-error/20 text-error-50 dark:text-error-950 border border-error/20',
+      'bg-error/20 text-error-950 dark:text-error-50 border border-error/20',
   } as const;
 
   const defaultIcons = {

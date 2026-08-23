@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Heading from '../../typography/heading/Heading';
 import Button from '../../button/Button';
 import Theme from '../../theme/Theme';
-import Link from 'next/link';
+import Founder from '../../founder/Founder';
 
 const MobileSidebar = () => {
   return (
@@ -14,7 +14,6 @@ const MobileSidebar = () => {
         priority
         className='object-cover -z-10 dark:hidden'
       />
-
       <Image
         src='/pattern_light.svg'
         alt=''
@@ -22,7 +21,6 @@ const MobileSidebar = () => {
         priority
         className='object-cover -z-10 hidden dark:block'
       />
-
       <div className='relative z-10 flex min-h-screen flex-col items-center justify-start px-6 pt-40 pb-10 text-center'>
         <div className='rounded-full p-[2px] bg-foreground mb-4'>
           <Image
@@ -33,7 +31,6 @@ const MobileSidebar = () => {
             className='rounded-full w-44 h-44 object-cover'
           />
         </div>
-
         <div className='max-w-xs w-full'>
           <Heading
             level={2}
@@ -42,19 +39,32 @@ const MobileSidebar = () => {
           >
             Petar Trifunovic
           </Heading>
-
-          <Heading level={4} className='text-lg leading-snug mb-6'>
-            Full-Stack Software Engineer & UI/UX Designer
+          <Heading level={3} className='text-lg leading-snug mb-4'>
+            Full-Stack Developer & UI/UX Designer
           </Heading>
-
+          <Founder className='mb-6' logoWidth={104} />
           <Button
-            href='#contact'
+            href='/petar-trifunovic-cv.pdf'
+            download='Petar Trifunovic - CV.pdf'
             variant='accent'
             className='w-full justify-center rounded-full mb-6'
           >
-            Hire Me!
+            Download CV
+            <span
+              aria-hidden='true'
+              className='block h-4 w-4 shrink-0 bg-accent-50'
+              style={{
+                maskImage: 'url(/download.svg)',
+                WebkitMaskImage: 'url(/download.svg)',
+                maskRepeat: 'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskPosition: 'center',
+                maskSize: 'contain',
+                WebkitMaskSize: 'contain',
+              }}
+            />
           </Button>
-
           <div className='flex flex-col items-center justify-center'>
             <Theme variant='secondary' className='mb-1' />
             <span className='mb-4'>Choose Mode</span>
@@ -63,15 +73,26 @@ const MobileSidebar = () => {
             </div>
           </div>
         </div>
-
         <div className='mt-auto pt-16 flex justify-center'>
-          <Button href='#introduction' variant='ghost' size='none'>
-            <Image
-              width={40}
-              height={40}
-              src='/chevron-down.svg'
-              alt='Scroll'
-              className='scroll-arrow'
+          <Button
+            href='#introduction'
+            variant='ghost'
+            size='none'
+            aria-label='Scroll to introduction'
+          >
+            <span
+              aria-hidden='true'
+              className='scroll-arrow block h-10 w-10 shrink-0 bg-primary'
+              style={{
+                maskImage: 'url(/chevron_light.svg)',
+                WebkitMaskImage: 'url(/chevron_light.svg)',
+                maskRepeat: 'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskPosition: 'center',
+                maskSize: 'contain',
+                WebkitMaskSize: 'contain',
+              }}
             />
           </Button>
         </div>

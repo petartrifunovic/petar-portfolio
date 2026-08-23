@@ -142,31 +142,40 @@ export default function ContactForm() {
       <FormGroup col='col-2'>
         <Input
           name='firstName'
+          aria-label='First name'
+          autoComplete='given-name'
+          maxLength={100}
           placeholder='First Name'
           value={form.firstName}
           onChange={handleChange}
           error={errors.firstName}
         />
-
         <Input
           name='lastName'
+          aria-label='Last name'
+          autoComplete='family-name'
+          maxLength={100}
           placeholder='Last name'
           value={form.lastName}
           onChange={handleChange}
           error={errors.lastName}
         />
       </FormGroup>
-
       <FormGroup col='col-2'>
         <Input
           name='company'
+          aria-label='Company name (optional)'
+          autoComplete='organization'
+          maxLength={150}
           placeholder='Company Name (Optional)'
           value={form.company}
           onChange={handleChange}
         />
-
         <Input
           name='email'
+          aria-label='Email address'
+          autoComplete='email'
+          maxLength={254}
           type='email'
           placeholder='Email'
           value={form.email}
@@ -174,20 +183,24 @@ export default function ContactForm() {
           error={errors.email}
         />
       </FormGroup>
-
       <FormGroup col='col-1'>
         <Input
           name='subject'
+          aria-label='Message subject'
+          autoComplete='off'
+          maxLength={200}
           placeholder='Enter message subject'
           value={form.subject}
           onChange={handleChange}
           error={errors.subject}
         />
       </FormGroup>
-
       <FormGroup col='col-1'>
         <Textarea
           name='message'
+          aria-label='Your message'
+          autoComplete='off'
+          maxLength={5000}
           placeholder='Write your message...'
           value={form.message}
           onChange={handleChange}
@@ -195,7 +208,6 @@ export default function ContactForm() {
           rows={6}
         />
       </FormGroup>
-
       <FormGroup col='col-1' className='mb-8'>
         <Checkbox
           checked={form.agreed}
@@ -205,7 +217,6 @@ export default function ContactForm() {
           I agree that my information may be used to respond to my inquiry.
         </Checkbox>
       </FormGroup>
-
       <div className='flex flex-col gap-3'>
         <Button
           type='submit'
@@ -217,14 +228,13 @@ export default function ContactForm() {
         >
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>
-
-        {responseMessage && (
-          <Message variant={isSuccess ? 'success' : 'error'}>
-            {isSuccess
-              ? 'Your message has been sent successfully.'
-              : responseMessage || 'Something went wrong. Please try again.'}
-          </Message>
-        )}
+        <div aria-live='polite' aria-atomic='true'>
+          {responseMessage && (
+            <Message variant={isSuccess ? 'success' : 'error'}>
+              {responseMessage}
+            </Message>
+          )}
+        </div>
       </div>
     </Form>
   );

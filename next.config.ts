@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'api.corals.studio' },
+      { protocol: 'https', hostname: 'corals.studio' },
+    ],
+  },
 };
 
 export default nextConfig;

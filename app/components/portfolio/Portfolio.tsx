@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Heading from '../typography/heading/Heading';
 import Paragraph from '../typography/paragraph/Paragraph';
@@ -18,87 +19,66 @@ type PortfolioItem = {
 const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
-    title: 'Finance Analytics Mobile App UI/UX Design & Development',
+    title: 'PayCanon Schedule Calendar',
     description:
-      'Modern finance dashboard app with clean UI, analytics charts, and smooth mobile experience.',
-    image: '/portfolio/finance_analytics_mobile_app.jpg',
+      'Every day carries its own type: working, weekend, holiday, standby or off. Quick-select fills a whole range in one action.',
+    image: '/portfolio/paycanon_1.jpg',
   },
   {
     id: 2,
-    title: 'Management Mobile App UI/UX Design',
+    title: 'PayCanon Staffing Report',
     description:
-      'Clean and modern task management app with scheduling, calendar view, and productivity-focused mobile UI.',
-    image: '/portfolio/management_mobile_app.jpg',
+      'Only teams over 30% absent are listed, so managers see the departments actually at risk. Key columns stay frozen while the row scrolls.',
+    image: '/portfolio/paycanon_2.jpg',
   },
   {
     id: 3,
-    title: 'Finance Transactions Mobile App',
+    title: 'Camellia Brand Identity',
     description:
-      'Modern finance app with transaction tracking, analytics, and clean mobile dashboard UI.',
-    image: '/portfolio/finance_transactions_mobile_app.jpg',
+      'A drawn botanical mark above a wide-tracked wordmark, gold on deep green. Single-weight strokes throughout, so it survives foil stamping.',
+    image: '/portfolio/camellia.jpg',
   },
   {
     id: 4,
-    title: 'Events Mobile App',
+    title: 'Corals Studio Pricing Engine',
     description:
-      'Responsive event discovery mobile app with modern UI, search functionality, and interactive frontend experience.',
-    image: '/portfolio/events_mobile_app.jpg',
+      'Pick the lines you need and the estimate builds as you go. The site and the enquiry form share one resolver, so they cannot quote different numbers.',
+    image: '/portfolio/corals_studio_pricing.jpg',
   },
   {
     id: 5,
-    title: 'Finance Analytics Dashboard Design & Full Stack Development',
+    title: 'Radio Periskop Merchandise',
     description:
-      'Modern financial analytics dashboard with interactive charts, dark UI design, and full stack web application development.',
-    image: '/portfolio/finance_analytics_dashboard.jpg',
+      'The station mark blown up and sprayed soft across the back, so it reads from across a room. Lime on black, year and handles set small.',
+    image: '/portfolio/radio_periskop.jpg',
   },
   {
     id: 6,
-    title: 'Job Finder Mobile App UI/UX Design',
+    title: 'PayCanon Employee Dashboard',
     description:
-      'Modern job search mobile app with clean UI, smart filtering, and user-friendly browsing experience.',
-    image: '/portfolio/job_finder_mobile_app.jpg',
+      'Attendance, remote split, staffing capacity and absence overlaps on one screen. Each figure is a ring you read at a glance.',
+    image: '/portfolio/paycanon_dashboard.jpg',
   },
   {
     id: 7,
-    title: 'E-Commerce Product App',
+    title: 'Camellia Business Card',
     description:
-      'Modern e-commerce mobile app with clean product showcase, smooth shopping experience, and minimal UI design.',
-    image: '/portfolio/e-commerce_product_app.jpg',
+      'Gold foil on black stock, the mark carried alone. At this size the drawing is what people recognise, so nothing competes with it.',
+    image: '/portfolio/camellia_business_card.jpg',
   },
   {
     id: 8,
-    title: 'Crypto Trading App Design & Development',
+    title: 'PayCanon Mobile App',
     description:
-      'Modern cryptocurrency trading app with real-time charts, dark UI, and interactive analytics dashboard.',
-    image: '/portfolio/crypto_trading_app.jpg',
+      'Leave requests, org chart, documents, scheduling and payroll under one drawer. The open ring in the wordmark doubles as the app mark.',
+    image: '/portfolio/paycanon_3.jpg',
   },
   {
     id: 9,
-    title: 'Luxury Business Card Design',
+    title: 'Radio Periskop App Icon',
     description:
-      'Elegant and modern business card design with premium branding and minimal luxury aesthetic.',
-    image: '/portfolio/luxury_business_card_design.jpg',
-  },
-  {
-    id: 10,
-    title: 'Real-Time Chat App Development',
-    description:
-      'Modern messaging application with real-time chat, clean dark UI, and responsive mobile experience.',
-    image: '/portfolio/real-time_chat_app_development.jpg',
-  },
-  {
-    id: 11,
-    title: 'Modern Logo Design & Brand Identity',
-    description:
-      'Creative and minimal logo design focused on modern branding and professional visual identity.',
-    image: '/portfolio/modern_logo_design_&_brand_identity.jpg',
-  },
-  {
-    id: 12,
-    title: 'Trading Dashboard UI Design & Development',
-    description:
-      'Modern trading platform with interactive charts, analytics, and responsive financial dashboard experience.',
-    image: '/portfolio/trading_dashboard.jpg',
+      'The same four circles as a flat two-colour icon. It holds at watch size, where the sprayed mark would turn to mush.',
+    image: '/portfolio/radio_periskop_app.jpg',
   },
 ];
 
@@ -107,6 +87,64 @@ const INITIAL_COUNT = 3;
 const Portfolio = () => {
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
   const [showAll, setShowAll] = useState(false);
+
+  const dialogTitleId = useId();
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const closeRef = useRef<HTMLButtonElement | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+
+  const open = (item: PortfolioItem) => {
+    openerRef.current = document.activeElement as HTMLElement | null;
+    setSelectedItem(item);
+  };
+
+  const close = useCallback(() => {
+    setSelectedItem(null);
+    openerRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedItem) return;
+
+    closeRef.current?.focus();
+
+    const { overflow } = document.body.style;
+
+    document.body.style.overflow = 'hidden';
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        close();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+
+      if (!focusable?.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = overflow;
+    };
+  }, [selectedItem, close]);
 
   const visibleItems = showAll
     ? portfolioItems
@@ -125,13 +163,12 @@ const Portfolio = () => {
                 src={item.image}
                 alt={item.title}
                 fill
+                sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px'
                 className='object-cover transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-3'
               />
-
-              <div className='absolute inset-0 transition duration-300 group-hover:bg-black/80' />
-
+              <div className='absolute inset-0 transition duration-300 group-hover:bg-black/80 group-focus-within:bg-black/80' />
               <div className='absolute inset-0 flex flex-col justify-between p-5'>
-                <div className='pointer-events-none translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100'>
+                <div className='pointer-events-none translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100'>
                   <Heading level={4} size='md' className='mb-2 text-white'>
                     {item.title}
                   </Heading>
@@ -139,11 +176,10 @@ const Portfolio = () => {
                     {item.description}
                   </Paragraph>
                 </div>
-
                 <div className='flex justify-end'>
                   <button
                     type='button'
-                    onClick={() => setSelectedItem(item)}
+                    onClick={() => open(item)}
                     aria-label={`Open ${item.title}`}
                     className={cn(
                       'group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full',
@@ -151,6 +187,7 @@ const Portfolio = () => {
                       'translate-y-4 opacity-0 transition-all duration-300',
                       'hover:scale-110 hover:bg-primary/20',
                       'group-hover:translate-y-0 group-hover:opacity-100',
+                      'focus-visible:translate-y-0 focus-visible:opacity-100',
                     )}
                   >
                     <Icon
@@ -165,7 +202,6 @@ const Portfolio = () => {
           </article>
         ))}
       </div>
-
       {portfolioItems.length > INITIAL_COUNT && (
         <div className='flex justify-center'>
           <Button
@@ -173,53 +209,75 @@ const Portfolio = () => {
             variant='ghost'
             size='none'
             onClick={() => setShowAll((prev) => !prev)}
-            iconRight={showAll ? 'ArrowUp01Icon' : 'ArrowDown01Icon'}
-            iconRightClassName='w-4 h-4'
+            className='group'
           >
             {showAll ? 'Show less' : 'Show more'}
+            <span
+              aria-hidden='true'
+              className={cn(
+                'block h-4 w-4 shrink-0 bg-title transition-all duration-200',
+                'group-hover:bg-primary-400',
+                showAll && 'rotate-180',
+              )}
+              style={{
+                maskImage: 'url(/chevron_down.svg)',
+                WebkitMaskImage: 'url(/chevron_down.svg)',
+                maskRepeat: 'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskPosition: 'center',
+                maskSize: 'contain',
+                WebkitMaskSize: 'contain',
+              }}
+            />
           </Button>
         </div>
       )}
 
-      {selectedItem && (
-        <div
+      {selectedItem &&
+        createPortal(
+          <div
+            ref={dialogRef}
+            role='dialog'
+          aria-modal='true'
+          aria-labelledby={dialogTitleId}
           className='fixed inset-0 z-[999] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm'
-          onClick={() => setSelectedItem(null)}
+          onClick={close}
         >
           <div
-            className='relative w-fit max-w-[95vw]'
+            className='relative w-full max-w-4xl'
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              ref={closeRef}
               type='button'
-              onClick={() => setSelectedItem(null)}
+              onClick={close}
               aria-label='Close modal'
               className='absolute right-4 top-4 z-20 flex cursor-pointer rounded-full bg-black/20 p-1 text-white'
             >
               <Icon name='Cancel01Icon' size={20} />
             </button>
-
-            <div className='overflow-hidden rounded-xl bg-card shadow-2xl'>
+            <div className='max-h-[90vh] overflow-y-auto rounded-xl bg-card shadow-2xl'>
               <div className='relative'>
                 <Image
                   src={selectedItem.image}
                   alt={selectedItem.title}
                   width={1200}
                   height={900}
-                  className='h-auto max-h-[80vh] w-auto max-w-[95vw] object-contain'
+                  className='h-auto w-full'
                 />
               </div>
-
               <div className='flex flex-col gap-2 border-t border-border bg-card p-6'>
-                <Heading level={3} size='sm'>
+                <Heading level={3} size='sm' id={dialogTitleId}>
                   {selectedItem.title}
                 </Heading>
                 <Paragraph>{selectedItem.description}</Paragraph>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 };

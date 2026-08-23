@@ -11,15 +11,12 @@ const WebDesignSection = () => {
     <Section id='web-design'>
       <Row>
         <Badge className='mb-4'>Web Design</Badge>
-
         <Heading level={2} size='xl' variant='primary'>
           Web Design - UI/UX
         </Heading>
-
         <Heading level={3} size='md' className='mb-4'>
           Designing intuitive, modern, and engaging digital experiences
         </Heading>
-
         <div className='mb-20'>
           <div className='mb-4 text-text leading-relaxed'>
             <div className='float-right ml-4 mb-2 flex w-max flex-col items-center gap-2 rounded-lg bg-card p-3'>
@@ -40,7 +37,6 @@ const WebDesignSection = () => {
               a clear and meaningful way.
             </Paragraph>
           </div>
-
           <Paragraph>
             Beyond visual design, I transform UI/UX concepts and wireframes into
             fully functional, responsive interfaces. By bridging design and
@@ -49,11 +45,9 @@ const WebDesignSection = () => {
             performance and usability.
           </Paragraph>
         </div>
-
         <Heading level={3} size='xs' className='text-left md:text-center'>
           Creativity, Strategy, Experience
         </Heading>
-
         <Heading
           level={2}
           size='lg'
@@ -62,7 +56,6 @@ const WebDesignSection = () => {
         >
           Turning Ideas into Exceptional Digital Experiences
         </Heading>
-
         <Timeline />
       </Row>
     </Section>

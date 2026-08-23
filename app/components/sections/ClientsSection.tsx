@@ -8,14 +8,13 @@ const ClientsSection = () => {
   return (
     <Section id='clients'>
       <Row>
-        <Badge className='mb-4'>Clients</Badge>
+        <Badge className='mb-4'>Testimonials</Badge>
         <Heading level={2} size='xl' variant='primary'>
-          Happy Clients
+          What Clients Say
         </Heading>
         <Heading level={3} size='md' className='mb-4'>
-          Words from Happy Clients
+          Feedback from people I have worked with
         </Heading>
-
         <ClientSlider />
       </Row>
     </Section>

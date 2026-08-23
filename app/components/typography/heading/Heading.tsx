@@ -15,6 +15,7 @@ export interface HeadingProps {
     | 'error';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   className?: string;
+  id?: string;
   children: React.ReactNode;
 }
 
@@ -23,6 +24,7 @@ const Heading = ({
   variant = 'title',
   size,
   className = '',
+  id,
   children,
 }: HeadingProps) => {
   const Tag: React.ElementType = `h${level}`;
@@ -55,7 +57,11 @@ const Heading = ({
 
   const headingStyle = cn(variants[variant], size && sizes[size], className);
 
-  return <Tag className={headingStyle}>{children}</Tag>;
+  return (
+    <Tag id={id} className={headingStyle}>
+      {children}
+    </Tag>
+  );
 };
 
 export default Heading;

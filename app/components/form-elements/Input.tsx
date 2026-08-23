@@ -1,6 +1,12 @@
 'use client';
 
-import { forwardRef, InputHTMLAttributes, useMemo, useState } from 'react';
+import {
+  forwardRef,
+  InputHTMLAttributes,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
 import Paragraph from '../typography/paragraph/Paragraph';
 import { cn } from '@/app/utils/cn';
 
@@ -32,6 +38,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
+    const errorId = `${inputId}-error`;
+
     const [isFocused, setIsFocused] = useState(false);
     const [internalValue, setInternalValue] = useState(
       defaultValue?.toString() ?? '',
@@ -48,24 +58,26 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const borderClass = useMemo(() => {
       if (error) return 'border-b-error';
-      if (hasValue) return 'border-b-success';
       if (isFocused) return 'border-b-primary';
+      if (hasValue) return 'border-b-success';
       return 'border-b-border';
     }, [error, hasValue, isFocused]);
 
     return (
       <div className='flex flex-col gap-1'>
         {label && (
-          <label htmlFor={id} className='text-xs text-muted'>
+          <label htmlFor={inputId} className='text-xs text-muted'>
             {label}
           </label>
         )}
 
         <input
           ref={ref}
-          id={id}
+          id={inputId}
           type={type}
           required={required}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
           value={currentValue}
           onFocus={(e) => {
             setIsFocused(true);
@@ -83,7 +95,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           }}
           disabled={disabled}
           className={cn(
-            'w-full h-14 px-4 text-content-text bg-card placeholder:text-muted',
+            'w-full h-14 px-4 text-text bg-card placeholder:text-muted',
             'border-0 border-b-2 rounded-tl-md rounded-tr-md rounded-bl-none rounded-br-none',
             'focus:outline-none',
             borderClass,
@@ -92,9 +104,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           {...props}
         />
-
         {error && (
-          <Paragraph className='text-xs font-medium text-error'>
+          <Paragraph
+            id={errorId}
+            role='alert'
+            className='text-xs font-medium text-error'
+          >
             {error}
           </Paragraph>
         )}

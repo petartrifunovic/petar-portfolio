@@ -1,17 +1,34 @@
-import * as HugeIcons from '@hugeicons/core-free-icons';
+import {
+  Alert02Icon,
+  Cancel01Icon,
+  CheckmarkCircle02Icon,
+  InformationCircleIcon,
+  InformationDiamondIcon,
+  Loading03Icon,
+  PlusSignIcon,
+  Tick02Icon,
+} from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import type { HugeiconsIconProps } from '@hugeicons/react';
 import { cn } from '@/app/utils/cn';
 
-export type IconName = keyof typeof HugeIcons;
-type HugeIconValue = HugeiconsIconProps['icon'];
+const icons = {
+  Alert02Icon,
+  Cancel01Icon,
+  CheckmarkCircle02Icon,
+  InformationCircleIcon,
+  InformationDiamondIcon,
+  Loading03Icon,
+  PlusSignIcon,
+  Tick02Icon,
+} as const;
+
+export type IconName = keyof typeof icons;
 
 export interface IconProps extends Omit<HugeiconsIconProps, 'ref' | 'icon'> {
   name: IconName;
   className?: string;
 }
-
-const icons = HugeIcons as Record<string, HugeIconValue>;
 
 const Icon = ({
   name,
@@ -21,24 +38,13 @@ const Icon = ({
   strokeWidth = 1.5,
   ...rest
 }: IconProps) => {
-  const icon = icons[name];
-
-  if (!icon) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn(
-        `Huge icon "${name}" not found in @hugeicons/core-free-icons. Verify the export name.`,
-      );
-    }
-    return null;
-  }
-
   return (
     <HugeiconsIcon
-      icon={icon}
+      icon={icons[name]}
       size={size}
       color={color}
       strokeWidth={strokeWidth}
-      className={cn('stroke-current', className)}
+      className={cn('shrink-0', className)}
       {...rest}
     />
   );

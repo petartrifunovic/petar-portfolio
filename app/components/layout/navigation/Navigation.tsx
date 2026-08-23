@@ -1,21 +1,24 @@
 import Link from 'next/link';
-import Icon from '../../icon/Icon';
 import Tooltip from '../../tooltip/Tooltip';
 
 const NAV_ITEMS = [
-  { label: 'Introduction', href: '#introduction', icon: 'UserCircle02Icon' },
-  { label: 'Hot Topics', href: '#hot-topics', icon: 'Unlink04Icon' },
-  { label: 'Development', href: '#development', icon: 'CodeIcon' },
-  { label: 'Web Design', href: '#web-design', icon: 'WebDesign01Icon' },
-  { label: 'Graphic Design', href: '#graphic-design', icon: 'PaintBoardIcon' },
-  { label: 'Portfolio', href: '#portfolio', icon: 'Image01Icon' },
-  { label: 'Clients', href: '#clients', icon: 'UserStoryIcon' },
-  { label: 'Latest Posts', href: '#latest-posts', icon: 'NewsIcon' },
-  { label: 'Contact', href: '#contact', icon: 'Mail01Icon' },
+  { label: 'Introduction', href: '#introduction', icon: '/user.svg' },
+  { label: 'Hot Topics', href: '#hot-topics', icon: '/link.svg' },
+  { label: 'Development', href: '#development', icon: '/development.svg' },
+  { label: 'Web Design', href: '#web-design', icon: '/web_design.svg' },
+  {
+    label: 'Graphic Design',
+    href: '#graphic-design',
+    icon: '/graphic_design.svg',
+  },
+  { label: 'Portfolio', href: '#portfolio', icon: '/portfolio.svg' },
+  { label: 'Clients', href: '#clients', icon: '/clients.svg' },
+  { label: 'Latest Posts', href: '#journal', icon: '/news.svg' },
+  { label: 'Contact', href: '#contact', icon: '/contact.svg' },
 ] as const;
 
 const iconStyle =
-  'w-5 h-5 hover:text-primary transition duration-200 ease-in-out';
+  'block w-5 h-5 bg-title hover:bg-primary-700 dark:hover:bg-primary-300 transition duration-200 ease-in-out';
 
 const tooltipStyle = 'mr-5';
 
@@ -26,7 +29,20 @@ const Navigation = () => {
         {NAV_ITEMS.map((item) => (
           <Tooltip key={item.label} text={item.label} className={tooltipStyle}>
             <Link href={item.href} aria-label={item.label}>
-              <Icon name={item.icon} className={iconStyle} />
+              <span
+                aria-hidden='true'
+                className={iconStyle}
+                style={{
+                  maskImage: `url(${item.icon})`,
+                  WebkitMaskImage: `url(${item.icon})`,
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskPosition: 'center',
+                  WebkitMaskPosition: 'center',
+                  maskSize: 'contain',
+                  WebkitMaskSize: 'contain',
+                }}
+              />
             </Link>
           </Tooltip>
         ))}

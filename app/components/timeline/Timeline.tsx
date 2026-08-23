@@ -1,10 +1,10 @@
 'use client';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import Reveal from '../motion/Reveal';
 import Image from 'next/image';
 import Card from '../card/Card';
 import Heading from '../typography/heading/Heading';
 import Paragraph from '../typography/paragraph/Paragraph';
-import Row from '../layout/row/Row';
 
 type TimelineItem = {
   id: number;
@@ -58,9 +58,91 @@ const CARD_MAX_WIDTH = 520;
 const ROW_FALLBACK_HEIGHT = 120;
 const ROW_BOTTOM_SPACE = 12;
 
+const useTimelineScroll = () => {
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [progress, setProgress] = useState(0);
+  const [reached, setReached] = useState(0);
+  const [span, setSpan] = useState({ top: 0, height: 0 });
+
+  useEffect(() => {
+    const track = trackRef.current;
+
+    if (!track) return;
+
+    let frame = 0;
+
+    const measure = () => {
+      frame = 0;
+
+      const rect = track.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      const start = viewport * 0.92;
+      const end = viewport * 0.72;
+      const travel = rect.height * 0.7 + start - end;
+      const next =
+        travel <= 0 ? 1 : Math.min(1, Math.max(0, (start - rect.top) / travel));
+
+      setProgress(next);
+
+      const dots = dotRefs.current.filter(Boolean) as HTMLDivElement[];
+
+      if (dots.length < 2) return;
+
+      const firstRect = dots[0].getBoundingClientRect();
+      const lastRect = dots[dots.length - 1].getBoundingClientRect();
+      const spanTop = firstRect.top + firstRect.height / 2;
+      const spanBottom = lastRect.top + lastRect.height / 2;
+
+      setSpan({ top: spanTop - rect.top, height: spanBottom - spanTop });
+
+      const filledBottom = spanTop + (spanBottom - spanTop) * next;
+
+      let count = 0;
+
+      for (const dot of dots) {
+        const dotRect = dot.getBoundingClientRect();
+
+        if (dotRect.top + dotRect.height / 2 <= filledBottom + 2) count += 1;
+      }
+
+      setReached(count);
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+
+    measure();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return { trackRef, dotRefs, progress, reached, span };
+};
+
 const Timeline = () => {
   const dotTop = 22;
   const dotCenter = dotTop + DOT_SIZE / 2;
+  const {
+    trackRef: desktopTrackRef,
+    dotRefs: desktopDotRefs,
+    progress: desktopProgress,
+    reached: desktopReached,
+  } = useTimelineScroll();
+  const {
+    trackRef: mobileTrackRef,
+    dotRefs: mobileDotRefs,
+    progress: mobileProgress,
+    reached: mobileReached,
+    span: mobileSpan,
+  } = useTimelineScroll();
 
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [rowHeights, setRowHeights] = useState<number[]>(
@@ -93,16 +175,19 @@ const Timeline = () => {
 
   return (
     <div>
-      <Row className='relative'>
-        <div className='relative hidden w-full md:block'>
+      <div className='relative'>
+        <div
+          ref={desktopTrackRef}
+          className='relative hidden w-full md:block'
+        >
           <div
-            className='absolute left-1/2 w-px -translate-x-1/2 bg-primary'
+            className='absolute left-1/2 w-px origin-top bg-primary'
             style={{
               top: dotCenter,
               bottom: Math.max(lastRowHeight - dotCenter, 0),
+              transform: `translateX(-50%) scaleY(${desktopProgress})`,
             }}
           />
-
           <div className='relative flex flex-col gap-10 lg:gap-12'>
             {timelineItems.map((item, index) => {
               const isLeft = index % 2 === 0;
@@ -114,14 +199,22 @@ const Timeline = () => {
                   style={{ height: rowHeights[index] ?? ROW_FALLBACK_HEIGHT }}
                 >
                   <div
-                    className='absolute left-1/2 z-10 rounded-full bg-primary -translate-x-1/2'
+                    ref={(el) => {
+                      desktopDotRefs.current[index] = el;
+                    }}
+                    className='absolute left-1/2 z-10 rounded-full bg-primary'
                     style={{
                       width: DOT_SIZE,
                       height: DOT_SIZE,
                       top: dotTop,
+                      opacity: index < desktopReached ? 1 : 0,
+                      transform: `translateX(-50%) scale(${
+                        index < desktopReached ? 1 : 0.4
+                      })`,
+                      transition:
+                        'opacity 260ms ease-out, transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1)',
                     }}
                   />
-
                   <div
                     className='absolute top-0 z-20 flex items-center justify-center rounded-2xl bg-card'
                     style={
@@ -146,7 +239,6 @@ const Timeline = () => {
                       className='h-9 w-9 object-contain'
                     />
                   </div>
-
                   {isLeft && (
                     <div
                       ref={(el) => {
@@ -158,17 +250,19 @@ const Timeline = () => {
                         width: `min(${CARD_MAX_WIDTH}px, calc(50% - ${GAP}px - 24px))`,
                       }}
                     >
-                      <Card className='hover:-translate-y-1 dark-hover:shadow-2xl hover:shadow-lg transition duration-200 ease-in-out'>
-                        <Heading
-                          level={4}
-                          className='mb-2 text-lg text-right font-semibold'
-                        >
-                          {item.title}
-                        </Heading>
-                        <Paragraph className='text-right text-sm'>
-                          {item.description}
-                        </Paragraph>
-                      </Card>
+                      <Reveal>
+                        <Card className='hover:-translate-y-1 transition duration-200 ease-in-out'>
+                          <Heading
+                            level={4}
+                            className='mb-2 text-lg text-right font-semibold'
+                          >
+                            {item.title}
+                          </Heading>
+                          <Paragraph className='text-right text-sm'>
+                            {item.description}
+                          </Paragraph>
+                        </Card>
+                      </Reveal>
                     </div>
                   )}
 
@@ -183,17 +277,19 @@ const Timeline = () => {
                         width: `min(${CARD_MAX_WIDTH}px, calc(50% - ${GAP}px - 24px))`,
                       }}
                     >
-                      <Card className='hover:-translate-y-1 dark-hover:shadow-2xl hover:shadow-lg transition duration-200 ease-in-out'>
-                        <Heading
-                          level={4}
-                          className='mb-2 text-lg font-semibold'
-                        >
-                          {item.title}
-                        </Heading>
-                        <Paragraph className='text-sm'>
-                          {item.description}
-                        </Paragraph>
-                      </Card>
+                      <Reveal>
+                        <Card className='hover:-translate-y-1 transition duration-200 ease-in-out'>
+                          <Heading
+                            level={4}
+                            className='mb-2 text-lg font-semibold'
+                          >
+                            {item.title}
+                          </Heading>
+                          <Paragraph className='text-sm'>
+                            {item.description}
+                          </Paragraph>
+                        </Card>
+                      </Reveal>
                     </div>
                   )}
                 </div>
@@ -201,21 +297,37 @@ const Timeline = () => {
             })}
           </div>
         </div>
-
-        <div className='relative flex w-full flex-col gap-5 md:hidden'>
+        <div
+          ref={mobileTrackRef}
+          className='relative flex w-full flex-col gap-5 md:hidden'
+        >
+          <div
+            className='absolute left-0 w-px origin-top bg-primary'
+            style={{
+              top: mobileSpan.top,
+              height: mobileSpan.height,
+              transform: `translateX(-50%) scaleY(${mobileProgress})`,
+            }}
+          />
           {timelineItems.map((item, index) => {
-            const isLast = index === timelineItems.length - 1;
-
             return (
               <div key={item.id} className='relative flex'>
                 <div className='relative w-5.5 shrink-0'>
-                  {!isLast && (
-                    <div className='absolute left-0 top-[20px] h-[calc(100%+20px)] w-px -translate-x-1/2 bg-primary' />
-                  )}
-
-                  <div className='absolute left-0 top-[20px] z-10 h-5 w-5 -translate-x-1/2 rounded-full bg-primary' />
+                  <div
+                    ref={(el) => {
+                      mobileDotRefs.current[index] = el;
+                    }}
+                    className='absolute left-0 top-5 z-10 h-5 w-5 rounded-full bg-primary'
+                    style={{
+                      opacity: index < mobileReached ? 1 : 0,
+                      transform: `translateX(-50%) scale(${
+                        index < mobileReached ? 1 : 0.4
+                      })`,
+                      transition:
+                        'opacity 260ms ease-out, transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    }}
+                  />
                 </div>
-
                 <div className='flex min-w-0 flex-1 items-start gap-3'>
                   <div className='relative z-20 mt-[2px] flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-card'>
                     <Image
@@ -226,21 +338,22 @@ const Timeline = () => {
                       className='h-8 w-8 object-contain'
                     />
                   </div>
-
-                  <Card className='flex-1 rounded-2xl p-5'>
-                    <Heading level={4} className='mb-2 font-semibold'>
+                  <Reveal className='min-w-0 flex-1'>
+                    <Card className='rounded-2xl p-5'>
+                    <Heading level={3} className='mb-2 font-semibold'>
                       {item.title}
                     </Heading>
                     <Paragraph className='text-sm'>
                       {item.description}
                     </Paragraph>
-                  </Card>
+                    </Card>
+                  </Reveal>
                 </div>
               </div>
             );
           })}
         </div>
-      </Row>
+      </div>
     </div>
   );
 };

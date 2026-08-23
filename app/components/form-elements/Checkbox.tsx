@@ -3,6 +3,7 @@
 import React, {
   forwardRef,
   InputHTMLAttributes,
+  useId,
   useMemo,
   useState,
 } from 'react';
@@ -66,9 +67,12 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       onChange?.(e);
     };
 
+    const generatedId = useId();
+    const errorId = `${generatedId}-error`;
+
     return (
       <div className={cn('flex flex-col gap-1', className)}>
-        <label className='inline-flex items-start gap-2 cursor-pointer text-sm text-content-text'>
+        <label className='inline-flex items-start gap-2 cursor-pointer text-sm text-text'>
           <div className='relative h-6 w-6 shrink-0'>
             <input
               ref={ref}
@@ -76,27 +80,31 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               checked={value}
               onChange={handleChange}
               className={cn(
-                'appearance-none h-full w-full rounded border border-border bg-card transition-all cursor-pointer focus:outline-none focus:border-success',
-                error && 'border-error focus:border-error',
+                'appearance-none h-full w-full rounded border border-border bg-card transition-all cursor-pointer',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-700',
+                error && 'border-error',
               )}
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? errorId : undefined}
               {...props}
             />
-
             {value && (
               <div className='absolute inset-0 z-10 flex items-center justify-center rounded bg-success pointer-events-none'>
                 <Icon name='Tick02Icon' className='h-5 w-5 text-success-50' />
               </div>
             )}
           </div>
-
           {children ? (
             <span className='text-base'>{children}</span>
           ) : (
             label && <span>{label}</span>
           )}
         </label>
-
-        {error && <Paragraph className='text-error'>{error}</Paragraph>}
+        {error && (
+          <Paragraph id={errorId} role='alert' className='text-error'>
+            {error}
+          </Paragraph>
+        )}
         {!error && helperText && <Paragraph>{helperText}</Paragraph>}
       </div>
     );

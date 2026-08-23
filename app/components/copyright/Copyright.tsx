@@ -7,7 +7,7 @@ const Copyright = ({ className = '' }: CopyrightProps) => {
 
   return (
     <span className={`text-muted text-sm ${className}`}>
-      © {year} Petar Trifunovic. All Rights Reserved
+      © {year} Petar Trifunovic
     </span>
   );
 };

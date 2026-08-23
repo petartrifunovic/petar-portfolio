@@ -1,7 +1,6 @@
 import { cn } from "@/app/utils/cn";
 import Heading from "../../typography/heading/Heading";
 
-
 interface SectionHeaderProps {
   className?: string;
   children?: React.ReactNode;
