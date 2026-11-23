@@ -80,6 +80,27 @@ const portfolioItems: PortfolioItem[] = [
       'The same four circles as a flat two-colour icon. It holds at watch size, where the sprayed mark would turn to mush.',
     image: '/portfolio/radio_periskop_app.jpg',
   },
+  {
+    id: 10,
+    title: 'Provereno Jobs Board',
+    description:
+      'Work in your own trades, inside the radius you set, shown as a distance rather than an address. Each card says how many have quoted, never at what price.',
+    image: '/portfolio/provereno_find_job.jpg',
+  },
+  {
+    id: 11,
+    title: 'Provereno Messages',
+    description:
+      'Request, quote and acceptance sit in the same thread as the chat, so the deal and the conversation are one record. Phone numbers stay hidden until a quote is accepted.',
+    image: '/portfolio/provereno_messages.jpg',
+  },
+  {
+    id: 12,
+    title: 'Provereno App Icon',
+    description:
+      'The v in the wordmark is drawn as a tick, and the icon keeps only that, white on a single blue. Provereno means "verified", so the mark says it before the name does.',
+    image: '/portfolio/provereno_app_icon.jpg',
+  },
 ];
 
 const INITIAL_COUNT = 3;
